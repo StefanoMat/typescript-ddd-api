@@ -1,6 +1,5 @@
 import { DbAddAccount } from './db-add-account'
-import { Encrypter } from '../../protocols/ecnrypter'
-import { rejects } from 'assert'
+import { Encrypter } from '../../protocols/encrypter'
 
 interface SubTypes {
   sut: DbAddAccount
