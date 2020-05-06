@@ -41,7 +41,7 @@ const makeSut = (): SutTypes => {
   }
 }
 describe('DbAddAccount Usecase', () => {
-  test('Shoul call Encrypter with correct password', async () => {
+  test('Should call Encrypter with correct password', async () => {
     const { sut, encrypterStub } = makeSut()
     const encryptSpy = jest.spyOn(encrypterStub, 'encrypt')
     const accountFields = {
@@ -53,7 +53,7 @@ describe('DbAddAccount Usecase', () => {
     expect(encryptSpy).toHaveBeenCalledWith('valid_pass')
   })
 
-  test('Shoul throw if Encrypter throws', async () => {
+  test('Should throw if Encrypter throws', async () => {
     const { sut, encrypterStub } = makeSut()
     jest.spyOn(encrypterStub, 'encrypt').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
     const accountFields = {
@@ -65,7 +65,7 @@ describe('DbAddAccount Usecase', () => {
     await expect(promise).rejects.toThrow()
   })
 
-  test('Shoul call AddAccountRepository with correct values', async () => {
+  test('Should call AddAccountRepository with correct values', async () => {
     const { sut, addAccountRepositoryStub } = makeSut()
     const addSpy = jest.spyOn(addAccountRepositoryStub, 'add')
     const accountFields = {
@@ -91,5 +91,21 @@ describe('DbAddAccount Usecase', () => {
     }
     const promise = sut.add(accountFields)
     await expect(promise).rejects.toThrow()
+  })
+
+  test('Should return an account on success', async () => {
+    const { sut } = makeSut()
+    const accountFields = {
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'valid_pass'
+    }
+    const account = await sut.add(accountFields)
+    expect(account).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid_email@mail.com',
+      password: 'hashed_value'
+    })
   })
 })
