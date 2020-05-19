@@ -38,7 +38,7 @@ interface SutTypes {
 const makeSut = (): SutTypes => {
   const controllerStub = makeController()
   const logErrorRepositoryStub = makeLogRepository()
-  const sut = new LogControllerDecorator(controllerStub, logErrorRepositoryStub )
+  const sut = new LogControllerDecorator(controllerStub, logErrorRepositoryStub)
   return {
     sut,
     controllerStub,
